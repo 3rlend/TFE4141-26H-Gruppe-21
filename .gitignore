@@ -1,0 +1,55 @@
+# ==========================================
+# Vivado Generated Directories & Files
+# ==========================================
+
+# Temporary build, run, and log files
+*.log
+*.jou
+*.str
+*.pb
+*.jou
+*.wbf
+*.wdb
+
+# Vivado project work directories
+/.Xil/
+/*.runs/
+/*.sim/
+/*.hw/
+/*.ip_user_files/
+/*.cache/
+/*.gen/
+
+# SDK/Vitis exported workspace directory
+/*.sdk/
+/*.vitis/
+
+# ==========================================
+# Bitstream & Implementation Outputs
+# ==========================================
+*.bit
+*.bin
+*.ltx
+*.sysdef
+*.hdf
+*.dsa
+*.xsa
+
+# ==========================================
+# IP Core Generated Files
+# ==========================================
+# Ignore generated output files for IP cores, but keep the core configuration (.xci)
+*.ip_user_files/
+*_stub.v
+*_stub.vhdl
+*_sim_netlist.v
+*_sim_netlist.vhdl
+*_ooc.xdc
+
+# ==========================================
+# OS & IDE Generated Files
+# ==========================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
