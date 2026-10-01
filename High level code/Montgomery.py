@@ -24,8 +24,8 @@ def RSA(M: int, e: int, n: int, r2: int) -> int:
 def MonPro(A: int, B: int, n: int) -> int:
     S = 0
     BN = B + n                      # regnes ut én gang per MonPro (PREP-tilstand)
-    for i in range(k):              # én iterasjon = én klokkesyklus i HW
-        a_i = (A >> i) & 1
+    for i in range(k):              # én iterasjon = én klokkesyklus i HW, 256 iterasjoner
+        a_i = (A >> i) & 1          # 1 bit av A per runde → radix 2¹ = 2
         q_i = (S + a_i * B) & 1     # gjør summen partall
         if a_i and q_i:
             S += BN
