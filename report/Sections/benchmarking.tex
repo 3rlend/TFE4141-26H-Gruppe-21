@@ -1,0 +1,38 @@
+\section{Performance benchmarking on FPGA}
+
+% Present benchmark results from FPGA runs, including the performance graph
+% from the Jupyter notebook.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{l c c c c c c}
+\toprule
+\textbf{Testcase} & T0 & T1 & T2 & T3 & T4 & T5 \\
+\midrule
+Type   & ENCR & ENCR & ENCR & DECR & DECR & DECR \\
+Blocks & 504 & 7056 & 144 & 504 & 7056 & 144 \\
+\midrule
+HW config 1 & & & & & & \\
+HW config 2 & & & & & & \\
+\bottomrule
+\end{tabular}
+\caption{Number of clock cycles spent running the different testcases.}
+\label{tab:cycles}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{l c c c c c c c}
+\toprule
+\textbf{Configuration} & \textbf{Freq.} & T0 & T1 & T2 & T3 & T4 & T5 \\
+\midrule
+SW          & --- & & & & & & \\
+HW config 1 &     & & & & & & \\
+HW config 2 &     & & & & & & \\
+\bottomrule
+\end{tabular}
+\caption{Runtime (in ms) for the different testcases.}
+\label{tab:runtime}
+\end{table}

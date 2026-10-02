@@ -1,0 +1,75 @@
+\section{Design requirements}
+
+The requirements are divided into functional (FUNC), performance, power and
+area (PPA), interface (INT) and configuration (CONF) requirements. ``OK'' in
+the rightmost column marks a requirement met by the design.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l X c}
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Description} & \textbf{Check} \\
+\midrule
+REQ\_FUNC\_01 & MUST & Compute modular exponentiation $X = Y^k \bmod n$. & \\
+REQ\_FUNC\_02 & MUST & Encrypt and decrypt message blocks: $C = M^e \bmod n$ and $M = C^d \bmod n$, with $M, C, e, d < n$. & \\
+REQ\_PPA\_01 & MUST & Encrypt/decrypt a 256-bit message as fast as possible. & \\
+REQ\_PPA\_02 & MUST & Fit inside the Zynq XC7Z020 FPGA on the Digilent PYNQ-Z1 board. & \\
+REQ\_PPA\_03 & MUST & No requirement on the clock frequency of the programmable logic. & \\
+REQ\_PPA\_04 & SHOULD & Run testcase 4 faster than 400\,ms. & \\
+REQ\_INT\_01 & MUST & Integrated as a hardware accelerator in the Zynq SoC, managed by the CPU and accessible through the Jupyter notebook interface. & \\
+REQ\_INT\_02 & SHOULD & Memory-mapped status registers, performance counters and other debug mechanisms. & \\
+REQ\_INT\_03 & MUST & One AXI-Lite slave interface for memory-mapped registers. & \\
+REQ\_INT\_04 & MUST & One AXI stream slave input interface and one AXI stream master output interface. & \\
+REQ\_CONF\_01 & SHOULD & Optimized for 256-bit block/message/key size. & \\
+\bottomrule
+\end{tabularx}
+\caption{RSA hardware accelerator design requirements.}
+\label{tab:design_req}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l X c}
+\toprule
+\textbf{ID} & \textbf{Priority} & \textbf{Description} & \textbf{Check} \\
+\midrule
+REQ\_DEV\_01 & MUST & Development broken down into milestones, delivered on time. & \\
+REQ\_DOC\_01 & MUST & All required parts of this document filled out. & \\
+REQ\_DOC\_02 & MUST & Information about the algorithm used for modular multiplication. & \\
+REQ\_DOC\_03 & MUST & Description of the design including microarchitecture diagrams. & \\
+REQ\_DOC\_04 & MUST & Verification plan. & \\
+REQ\_DOC\_05 & MUST & Results from performance measurements. & \\
+REQ\_CODE\_01 & MUST & RTL code attached to the final delivery bundle. & \\
+REQ\_CODE\_02 & MUST & Testbench code attached to the final delivery bundle. & \\
+REQ\_CODE\_03 & MUST & High-level model code attached to the final delivery bundle. & \\
+\bottomrule
+\end{tabularx}
+\caption{Documentation and code requirements.}
+\label{tab:doc_req}
+\end{table}
+
+\subsection{Milestones}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l X c}
+\toprule
+\textbf{Milestone} & \textbf{Date} & \textbf{Description} & \textbf{Check} \\
+\midrule
+Form groups & Aug 25 & Form term project groups & \\
+Study algorithms & Sep 9 & Study algorithms and pick one & \\
+High-level model & Sep 16 & Implement the algorithm in a high-level language & \\
+Microarchitecture & Oct 2 & Microarchitecture diagram in this datasheet & \\
+Performance estimate & Oct 2 & Estimate time to encrypt/decrypt a block & \\
+Microarchitecture review & Oct 2 & Presentation and peer review in class & \\
+RTL code (alpha) & Oct 28 & Synthesizable RTL code with testbenches & \\
+Working on FPGA (alpha) & Nov 11 & Design working on FPGA, PPA uploaded & \\
+Final hand-in & Nov 20 & This document and all source code & \\
+\bottomrule
+\end{tabularx}
+\caption{Term project schedule and milestones.}
+\label{tab:milestones}
+\end{table}
