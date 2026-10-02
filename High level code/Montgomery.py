@@ -24,6 +24,20 @@ k = 256
  
  
 def compute_r2(n: int) -> int:
+    """
+    Compute r^2 mod n = 2^(2k) mod n without any division.
+ 
+    r^2 mod n is needed to convert the message into the Montgomery domain:
+        MonPro(M, r^2) = M * r^2 * r^-1 = M * r  (mod n)
+ 
+    Method: start with 1 and double it 2k times. After each doubling, subtract
+    n once if the value has become >= n. One subtraction is always enough,
+    because if r2 < n before doubling, then 2*r2 < 2n after doubling.
+ 
+    Depends only on n (the key), so it is computed once per key, not per message.
+    Hardware: register + left shift (wiring) + subtractor + 2:1 mux + counter,
+    about 2k = 512 clock cycles.
+    """
     r2 = 1
     for i in range(2 * k):
         r2 <<= 1            # double the value (left shift by one bit)
@@ -33,7 +47,18 @@ def compute_r2(n: int) -> int:
  
  
 def RSA(M: int, e: int, n: int, r2: int) -> int:
-
+    """
+    Compute M^e mod n with left-to-right binary exponentiation
+    (square-and-multiply), using Montgomery products for every multiplication.
+ 
+    Encryption and decryption are the same computation:
+        encryption: C = M^e mod n   (exponent e, public key)
+        decryption: M = C^d mod n   (exponent d, private key)
+ 
+    All intermediate values are kept in the Montgomery domain (x_bar = x * r mod n),
+    so the extra factor r^-1 introduced by each MonPro cancels out.
+    """
+ 
     # Convert the message into the Montgomery domain: M_bar = M * r mod n.
     M_bar = MonPro(M, r2, n)
  
@@ -44,7 +69,7 @@ def RSA(M: int, e: int, n: int, r2: int) -> int:
  
     # Process the remaining bits of e from the most significant to bit 0.
     # bit_length() - 2 because the top bit has already been handled above.
-    for i in range(e.bit_length() -2, -1, -1):
+    for i in range(e.bit_length() - 2, -1, -1):
         x_bar = MonPro(x_bar, x_bar, n)        # square (every bit)
         if (e >> i) & 1:                       # bit i of e is 1:
             x_bar = MonPro(x_bar, M_bar, n)    # multiply by M_bar
@@ -54,7 +79,22 @@ def RSA(M: int, e: int, n: int, r2: int) -> int:
  
  
 def MonPro(A: int, B: int, n: int) -> int:
-
+    """
+    Montgomery product: returns A * B * r^-1 mod n, with r = 2^k.
+    Requires A, B < n and n odd.
+ 
+    Radix-2 (bit-serial) version, Koc 1995 Sec. 7.4:
+      - One bit of A is processed per iteration (radix 2^1 = 2).
+      - Each iteration divides the partial sum by 2 (a 1-bit right shift).
+      - After k = 256 iterations the sum has been divided by 2^k = r.
+ 
+    Why it works: n is added whenever the partial sum would be odd. This does
+    not change the value modulo n, but makes the sum even so the division by 2
+    is exact. With radix 2 this decision is a single bit (q_i), so no
+    precomputed n' = -n^-1 mod r is needed.
+ 
+    One loop iteration corresponds to one clock cycle in hardware.
+    """
     S = 0                           # partial sum (S register in hardware)
  
     # Precompute B + n once per MonPro (PREP state in hardware).
@@ -69,6 +109,7 @@ def MonPro(A: int, B: int, n: int) -> int:
         # q_i = 1 if the sum S + a_i*B would be odd. Computed BEFORE the addition:
         # only the lowest bits are needed (in hardware: S0 XOR (a_i AND b0)).
         q_i = (S + a_i * B) & 1
+ 
         # 4:1 mux selecting what to add, controlled by (a_i, q_i):
         if a_i and q_i:
             S += BN                 # (1, 1): add B + n
@@ -77,7 +118,7 @@ def MonPro(A: int, B: int, n: int) -> int:
         elif q_i:
             S += n                  # (0, 1): add n
                                     # (0, 0): add 0
-
+ 
         S >>= 1                     # exact division by 2 (sum is always even here)
  
     # S is now in [0, 2n). One conditional subtraction brings it into [0, n).
