@@ -1,0 +1,41 @@
+% TFE4141 Design of Digital Systems 1 - RSA term project datasheet
+% Based on the NTNU template by Jon Arnt Kårstad
+\documentclass{article}
+
+\usepackage{packages}
+\usepackage{booktabs}   % Nicer tables
+\usepackage{tabularx}   % Tables with automatic column widths
+\usepackage{array}
+
+\begin{document}
+
+\import{./}{title}
+
+\frontmatter
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+
+\import{./Sections/}{introduction}            % Intro, code of honor
+\import{./Sections/}{requirements}            % Requirement tables + milestones (fill in "OK")
+\import{./Sections/}{high_level_model}        % 9 points
+\import{./Sections/}{system_overview}
+\import{./Sections/}{microarchitecture}       % 20 points
+\import{./Sections/}{performance_estimation}  % 8 points
+\import{./Sections/}{verification}            % 10 points
+\import{./Sections/}{synthesis}               % 20 points
+\import{./Sections/}{benchmarking}            % 15 points
+\import{./Sections/}{source_code}             % 9 points
+\import{./Sections/}{sustainability}          % 9 points
+
+\newpage
+\nocite{*}
+\printbibliography[heading = bibintoc, title = References]
+
+% Uncomment if you need appendices
+% \addappendix
+% \import{./Appendices/}{appendix}
+
+\end{document}
